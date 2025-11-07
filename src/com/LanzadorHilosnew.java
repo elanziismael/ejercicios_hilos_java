@@ -1,20 +1,18 @@
 package com;
 
 public class LanzadorHilosnew {
-    private static final Object LOCK = new Object();
-
     public static void main(String[] args) throws InterruptedException {
         Thread t = new Thread(() -> {
-            synchronized (LOCK) {
-                try {
-                    System.out.println(Thread.currentThread().getName() + " esperando...");
-                    LOCK.wait();
-                } catch (InterruptedException ignored) {}
-            }
-        }, "tWaiting");
-        t.start();
-        Thread.sleep(100);
-        System.out.println(t.getName() + " -> " + t.getState());
+            try {
+                // El hilo se bloquea en TIMED_WAITING durante 2 s.
+                Thread.sleep(2000);
+            } catch (InterruptedException ignored) { }
+        }, "tiempo");
+
+        t.start();                     // h comienza a ejecutarse
+        Thread.sleep(50);              // le damos tiempo para entrar en sleep
+        //Thread.sleep(10);  // Muy poco tiempo, muy probable que todavía esté en sleep
+        System.out.println(t.getName() + " -> " + t.getState()); // TIMED_WAITING o RUNNABLE según el timing
     }
-    
 }
+    
