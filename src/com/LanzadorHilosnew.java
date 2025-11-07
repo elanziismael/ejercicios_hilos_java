@@ -2,9 +2,16 @@ package com;
 
 public class LanzadorHilosnew {
     public static void main(String[] args) {
-        Thread h = new Thread(new Hilo("nuevo"));
+        Thread h = new Thread(new Hilo("runnable"));
+        h.start();
+        try {
+            Thread.sleep(50);
+            System.out.println(h.getName() + " -> " + h.getState());
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
-        System.out.println(h.getName() + " -> " + h.getState());
+        
 
 
     }
