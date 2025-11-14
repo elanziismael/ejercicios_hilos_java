@@ -3,28 +3,39 @@ public class Main{
 
     public static void main(String [] args) {
 
-		Runnable tareaPausada = () -> {
-            String nombre = Thread.currentThread().getName();
-            System.out.println(nombre + ": ¡Empezando la cuenta!");
-
+        Runnable tarea = () -> {
             try {
-                for (int i = 1; i <= 5; i++) {
-                    System.out.println(nombre + ": " + i);
-                    
-                    Thread.sleep(1000); 
-                }
+                Thread.sleep(500);
             } catch (InterruptedException e) {
-                System.out.println(nombre + " fue interrumpido.");
+                e.printStackTrace();
             }
-            
-            System.out.println(nombre + ": Terminado");
         };
 
-        Thread hilo = new Thread(tareaPausada, "Hilo-Contador");
+        Thread hilo = new Thread(tarea);
+
+        System.out.println("1. Antes de start():");
+        System.out.println("   Estado: " + hilo.getState());
+        System.out.println("   ¿Está vivo? " + hilo.isAlive());
+
         hilo.start();
 
-        System.out.println(Thread.currentThread().getName() + ": He iniciado el hilo contador y sigo con mis tareas.");
-        System.out.println(Thread.currentThread().getName() + ": Terminando.");
+        try {
+            Thread.sleep(100);
+        } catch (InterruptedException e) { e.printStackTrace(); }
+
+        System.out.println("Durante la ejecución (mientras duerme):");
+        System.out.println("Estado: " + hilo.getState());
+        System.out.println("¿Está vivo? " + hilo.isAlive());
+
+        try {
+            hilo.join();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("3. Después de que join() termina:");
+        System.out.println("Estado: " + hilo.getState());
+        System.out.println("¿Está vivo? " + hilo.isAlive());
 
 	}
 
