@@ -3,29 +3,29 @@ public class Main{
 
     public static void main(String [] args) {
 
-		Thread hilo1 = new Thread(() -> {
+		Runnable tareaPausada = () -> {
             String nombre = Thread.currentThread().getName();
-            System.out.println("Ejecutando: " + nombre);
-        });
+            System.out.println(nombre + ": ¡Empezando la cuenta!");
 
-        hilo1.setName("Hilo-Usuario");
+            try {
+                for (int i = 1; i <= 5; i++) {
+                    System.out.println(nombre + ": " + i);
+                    
+                    Thread.sleep(1000); 
+                }
+            } catch (InterruptedException e) {
+                System.out.println(nombre + " fue interrumpido.");
+            }
+            
+            System.out.println(nombre + ": Terminado");
+        };
 
-        Thread hilo2 = new Thread(() -> {
-            String nombre = Thread.currentThread().getName();
-            System.out.println("Ejecutando: " + nombre);
-        });
-        hilo2.setName("Proceso-Background");
+        Thread hilo = new Thread(tareaPausada, "Hilo-Contador");
+        hilo.start();
 
-        Thread hilo3 = new Thread(() -> {
-            String nombre = Thread.currentThread().getName();
-            System.out.println("Ejecutando: " + nombre);
-        });
+        System.out.println(Thread.currentThread().getName() + ": He iniciado el hilo contador y sigo con mis tareas.");
+        System.out.println(Thread.currentThread().getName() + ": Terminando.");
 
-        hilo1.start();
-        hilo2.start();
-        hilo3.start();
-
-        System.out.println("Ejecutando: " + Thread.currentThread().getName());
 	}
 
 
